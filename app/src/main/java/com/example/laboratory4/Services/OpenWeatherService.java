@@ -1,6 +1,7 @@
 package com.example.laboratory4.Services;
 
 import com.example.laboratory4.Objetos.Geolocation;
+import com.example.laboratory4.Objetos.Weather;
 
 import java.util.List;
 
@@ -12,4 +13,9 @@ public interface OpenWeatherService {
     @GET("/geo/1.0/direct")
     Call<List<Geolocation>> getGeolocation(@Query("q") String city,
                               @Query("appid") String apiKey);
+
+    @GET("/data/2.5/weather")
+    Call<Weather> getWeather(@Query("lat") float lat,
+                             @Query("lon") float lon,
+                             @Query("appid") String apiKey);
 }
