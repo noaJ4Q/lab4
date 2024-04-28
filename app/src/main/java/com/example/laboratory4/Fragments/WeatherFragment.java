@@ -1,5 +1,10 @@
 package com.example.laboratory4.Fragments;
 
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -29,15 +34,17 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class WeatherFragment extends Fragment {
+public class WeatherFragment extends Fragment implements SensorEventListener {
     FragmentWeatherBinding binding;
     AppActivity appActivity;
     WeatherAdapter weatherAdapter = new WeatherAdapter();
     List<Weather> weathers;
+    SensorManager sensorManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
         appActivity = (AppActivity)getActivity();
         binding = FragmentWeatherBinding.inflate(inflater, container, false);
 
@@ -96,5 +103,15 @@ public class WeatherFragment extends Fragment {
 
         binding.weatherRecycler.setAdapter(weatherAdapter);
         binding.weatherRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     }
 }
