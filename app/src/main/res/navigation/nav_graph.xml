@@ -21,6 +21,8 @@
         tools:layout="@layout/fragment_weather" >
         <action
             android:id="@+id/action_weatherFragment_to_cityFragment"
-            app:destination="@id/cityFragment" />
+            app:destination="@id/cityFragment"
+            app:popUpTo="@id/cityFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 </navigation>

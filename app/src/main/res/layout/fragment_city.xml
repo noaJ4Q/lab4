@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Buscar ciudad"
+        android:text="Buscar localización"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,7 +30,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView3">
 
         <EditText
-            android:id="@+id/editTextText2"
+            android:id="@+id/locationInput"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -39,10 +39,10 @@
             android:text="Name" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/searchLocationButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Button" />
+            android:text="Buscar" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
