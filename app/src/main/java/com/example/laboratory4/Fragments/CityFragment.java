@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.laboratory4.AppActivity;
 import com.example.laboratory4.Objetos.Geolocation;
 import com.example.laboratory4.R;
 import com.example.laboratory4.Recycler.GeolocationAdapter;
@@ -31,12 +32,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class CityFragment extends Fragment {
 
     FragmentCityBinding binding;
+
+    AppActivity appActivity;
     GeolocationAdapter geolocationAdapter = new GeolocationAdapter();
-    List<Geolocation> geolocations = new ArrayList<>();
+    List<Geolocation> geolocations;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentCityBinding.inflate(inflater, container, false);
+        appActivity = (AppActivity)getActivity();
 
         NavController navController = NavHostFragment.findNavController(CityFragment.this);
         Button goSearchWeatherButton = getActivity().findViewById(R.id.goSearchWeatherButton);
@@ -70,7 +74,9 @@ public class CityFragment extends Fragment {
                 if (response.isSuccessful()){
                     List<Geolocation> geolocationsReceived = response.body();
                     Geolocation firstGeolocation = geolocationsReceived.get(0);
+
                     geolocations.add(firstGeolocation);
+                    appActivity.setGeolocations(geolocations);
                     geolocationAdapter.notifyItemInserted(geolocations.size());
                 }
             }
@@ -84,6 +90,8 @@ public class CityFragment extends Fragment {
     }
 
     private void initializeRecycler(){
+        geolocations = appActivity.getGeolocations();
+
         geolocationAdapter.setContext(getContext());
         geolocationAdapter.setGeolocations(geolocations);
 

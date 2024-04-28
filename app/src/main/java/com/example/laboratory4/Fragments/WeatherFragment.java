@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.laboratory4.AppActivity;
 import com.example.laboratory4.Objetos.Weather;
 import com.example.laboratory4.R;
 import com.example.laboratory4.Recycler.WeatherAdapter;
@@ -30,12 +31,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class WeatherFragment extends Fragment {
     FragmentWeatherBinding binding;
+    AppActivity appActivity;
     WeatherAdapter weatherAdapter = new WeatherAdapter();
-    List<Weather> weathers = new ArrayList<>();
+    List<Weather> weathers;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        appActivity = (AppActivity)getActivity();
         binding = FragmentWeatherBinding.inflate(inflater, container, false);
 
         NavController navController = NavHostFragment.findNavController(WeatherFragment.this);
@@ -71,7 +74,9 @@ public class WeatherFragment extends Fragment {
                binding.searchWeatherButton.setEnabled(true);
                if (response.isSuccessful()){
                    Weather weather = response.body();
+
                    weathers.add(weather);
+                   appActivity.setWeathers(weathers);
                    weatherAdapter.notifyItemInserted(weathers.size());
                }
             }
@@ -84,6 +89,8 @@ public class WeatherFragment extends Fragment {
     }
 
     private void initializeRecycler(){
+        weathers = appActivity.getWeathers();
+
         weatherAdapter.setContext(getContext());
         weatherAdapter.setWeathers(weathers);
 
