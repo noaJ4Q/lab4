@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:text="0 K"
         android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="@+id/tempMinText"
+        app:layout_constraintBottom_toBottomOf="@+id/locationText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/locationText" />
 
@@ -47,5 +47,16 @@
         android:text="Temp max: -"
         app:layout_constraintBaseline_toBaselineOf="@+id/tempMinText"
         app:layout_constraintStart_toEndOf="@+id/tempMinText" />
+
+    <TextView
+        android:id="@+id/windText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:text="Viento: -"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tempMaxText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/tempMaxText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

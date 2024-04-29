@@ -26,6 +26,7 @@ import com.example.laboratory4.Services.OpenWeatherService;
 import com.example.laboratory4.databinding.FragmentWeatherBinding;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -34,19 +35,21 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class WeatherFragment extends Fragment implements SensorEventListener {
+public class WeatherFragment extends Fragment implements SensorEventListener{
     FragmentWeatherBinding binding;
     AppActivity appActivity;
     WeatherAdapter weatherAdapter = new WeatherAdapter();
     List<Weather> weathers;
     SensorManager sensorManager;
+    float xMageneticField;
+    float yMagneticField;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
         appActivity = (AppActivity)getActivity();
         binding = FragmentWeatherBinding.inflate(inflater, container, false);
+        sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
 
         NavController navController = NavHostFragment.findNavController(WeatherFragment.this);
         Button goSearchLocationButton = getActivity().findViewById(R.id.goSearchLocationButton);
@@ -66,9 +69,21 @@ public class WeatherFragment extends Fragment implements SensorEventListener {
         return binding.getRoot();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Sensor magneticField = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+        sensorManager.registerListener(this, magneticField, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        sensorManager.unregisterListener(this);
+    }
+
     private void searchWeather(float lat, float lon){
         binding.searchWeatherButton.setEnabled(false);
-
         OpenWeatherService openWeatherService = new Retrofit.Builder()
                 .baseUrl("https://api.openweathermap.org")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -82,6 +97,7 @@ public class WeatherFragment extends Fragment implements SensorEventListener {
                if (response.isSuccessful()){
                    Weather weather = response.body();
 
+                   weather.setWind(calculateWindDirection());
                    weathers.add(weather);
                    appActivity.setWeathers(weathers);
                    weatherAdapter.notifyItemInserted(weathers.size());
@@ -107,11 +123,20 @@ public class WeatherFragment extends Fragment implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-
+        int sensorType = event.sensor.getType();
+        if (sensorType == Sensor.TYPE_MAGNETIC_FIELD){
+            Log.d("msg-test", Arrays.toString(event.values));
+            xMageneticField = event.values[0];
+            yMagneticField = event.values[1];
+        }
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
+    }
+
+    private String calculateWindDirection(){
+        return "ga";
     }
 }

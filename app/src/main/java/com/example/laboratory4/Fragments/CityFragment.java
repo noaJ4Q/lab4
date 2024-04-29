@@ -72,7 +72,7 @@ public class CityFragment extends Fragment implements SensorEventListener {
     public void onResume() {
         super.onResume();
         Sensor accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI);
+        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     @Override
