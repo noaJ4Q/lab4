@@ -112,7 +112,6 @@ public class WeatherFragment extends Fragment implements SensorEventListener{
                    Log.d("msg-test", String.valueOf(response.body()));
                    Weather weather = response.body();
 
-                   weather.setWindDirection(calculateWindDirection());
                    weathersFragment.add(weather);
                    itemsViewModel.getWeathers().setValue(weathersFragment);
                    weatherAdapter.notifyItemInserted(weathersFragment.size());

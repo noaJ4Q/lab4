@@ -46,6 +46,7 @@ public class CityFragment extends Fragment implements SensorEventListener {
     SensorManager sensorManager;
     ItemsViewModel itemsViewModel;
     List<Geolocation> geolocationsFragment = new ArrayList<>();
+    boolean dialogOpened = false;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -135,9 +136,9 @@ public class CityFragment extends Fragment implements SensorEventListener {
             double yMod = Math.pow(Math.abs(event.values[1]), 2);
             double zMod = Math.pow(Math.abs(event.values[2]), 2);
             double accelerometerModule = Math.sqrt(xMod+yMod+zMod);
-            //if (accelerometerModule >= 30 && !g.isEmpty()){
-                //showUndoDialog();
-            //}
+            if (accelerometerModule >= 30 && !geolocationsFragment.isEmpty() && !dialogOpened){
+                showUndoDialog();
+            }
         }
     }
 
@@ -152,15 +153,20 @@ public class CityFragment extends Fragment implements SensorEventListener {
         alertDialog.setPositiveButton("Deshacer", (dialog, which) -> {
             deleteLastLocationItem();
             dialog.dismiss();
+            dialogOpened = false;
         });
-        alertDialog.setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss());
+        alertDialog.setNegativeButton("Cancelar", (dialog, which) -> {
+            dialog.dismiss();
+            dialogOpened = false;
+        });
         alertDialog.show();
-        alertDialog.show().isShowing();
+        dialogOpened = true;
     }
     private void deleteLastLocationItem(){
-        //int removedPosition = g.size()-1;
-        //g.remove(removedPosition);
-        //binding.locationRecycler.removeViewAt(removedPosition);
-        //geolocationAdapter.notifyItemRemoved(removedPosition);
+        int removedPosition = geolocationsFragment.size()-1;
+        geolocationsFragment.remove(removedPosition);
+        itemsViewModel.getGeolocations().setValue(geolocationsFragment);
+        binding.locationRecycler.removeViewAt(removedPosition);
+        geolocationAdapter.notifyItemRemoved(removedPosition);
     }
 }

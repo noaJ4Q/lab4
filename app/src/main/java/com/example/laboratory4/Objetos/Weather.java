@@ -4,7 +4,6 @@ public class Weather {
     public Main main;
     public String name;
     public int cod;
-    public String windDirection;
 
     public Main getMain() {
         return main;
@@ -18,7 +17,4 @@ public class Weather {
         return cod;
     }
 
-    public void setWindDirection(String windDirection) {
-        this.windDirection = windDirection;
-    }
 }
