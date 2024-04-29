@@ -4,11 +4,15 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.laboratory4.Fragments.CityFragment;
 import com.example.laboratory4.Objetos.Geolocation;
 import com.example.laboratory4.R;
 
@@ -35,8 +39,8 @@ public class GeolocationAdapter extends RecyclerView.Adapter<GeolocationAdapter.
         TextView lonText = holder.itemView.findViewById(R.id.geolocationLonText);
 
         nameText.setText(geolocation.name);
-        latText.setText("Latitud: " + geolocation.lat);
-        lonText.setText("Longitud: " + geolocation.lon);
+        latText.setText("Lat: " + geolocation.lat);
+        lonText.setText("Lon: " + geolocation.lon);
     }
 
     @Override
@@ -49,6 +53,10 @@ public class GeolocationAdapter extends RecyclerView.Adapter<GeolocationAdapter.
         Geolocation geolocation;
         public GeolocationViewHolder(@NonNull View itemView) {
             super(itemView);
+            Button weatherButton = itemView.findViewById(R.id.weatherButton);
+            weatherButton.setOnClickListener(v -> {
+
+            });
         }
     }
 

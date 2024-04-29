@@ -149,6 +149,7 @@ public class CityFragment extends Fragment implements SensorEventListener {
         });
         alertDialog.setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss());
         alertDialog.show();
+        alertDialog.show().isShowing();
     }
     private void deleteLastLocationItem(){
         int removedPosition = geolocations.size()-1;

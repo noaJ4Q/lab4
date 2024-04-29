@@ -5,6 +5,7 @@
     android:id="@+id/backgroundLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".Fragments.WeatherFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -14,7 +15,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="Buscar clima"
-        android:textSize="24sp"
+        android:textColor="@color/black"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -38,7 +40,10 @@
             android:layout_weight="1"
             android:ems="10"
             android:hint="Latitud"
-            android:inputType="number|numberDecimal|numberSigned" />
+            android:inputType="number|numberDecimal|numberSigned"
+            android:textColor="@color/black"
+            android:textColorHint="#707070"
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/lonInput"
@@ -47,14 +52,19 @@
             android:layout_weight="1"
             android:ems="10"
             android:hint="Longitud"
-            android:inputType="number|numberDecimal|numberSigned" />
+            android:inputType="number|numberDecimal|numberSigned"
+            android:textColor="@color/black"
+            android:textColorHint="#707070"
+            android:textSize="16sp" />
 
         <Button
             android:id="@+id/searchWeatherButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:text="Buscar" />
+            android:layout_marginStart="12dp"
+            android:backgroundTint="#707070"
+            android:text="Buscar"
+            android:textColor="@color/white" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
