@@ -46,7 +46,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherV
         temperatureText.setText(weather.main.temp + " K");
         tempMinText.setText("Min: " + weather.main.temp_min + " K");
         tempMaxText.setText("Max: " + weather.main.temp_max + " K");
-        windText.setText("Viento: " + weather.wind);
+        windText.setText("Viento: " + weather.windDirection);
     }
 
     @Override

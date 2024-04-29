@@ -95,9 +95,10 @@ public class WeatherFragment extends Fragment implements SensorEventListener{
             public void onResponse(Call<Weather> call, Response<Weather> response) {
                binding.searchWeatherButton.setEnabled(true);
                if (response.isSuccessful()){
+                   Log.d("msg-test", String.valueOf(response.body()));
                    Weather weather = response.body();
 
-                   weather.setWind(calculateWindDirection());
+                   weather.setWindDirection(calculateWindDirection());
                    weathers.add(weather);
                    appActivity.setWeathers(weathers);
                    weatherAdapter.notifyItemInserted(weathers.size());
@@ -106,6 +107,7 @@ public class WeatherFragment extends Fragment implements SensorEventListener{
 
             @Override
             public void onFailure(Call<Weather> call, Throwable throwable) {
+                throwable.printStackTrace();
                 binding.searchWeatherButton.setEnabled(true);
             }
         });
@@ -125,9 +127,18 @@ public class WeatherFragment extends Fragment implements SensorEventListener{
     public void onSensorChanged(SensorEvent event) {
         int sensorType = event.sensor.getType();
         if (sensorType == Sensor.TYPE_MAGNETIC_FIELD){
-            Log.d("msg-test", Arrays.toString(event.values));
             xMageneticField = event.values[0];
             yMagneticField = event.values[1];
+
+            //double magneticVectorMagnitude = Math.sqrt(xMageneticField * xMageneticField + yMagneticField * yMagneticField);
+            //double cosineTheta = ((xMageneticField * 0) + (yMagneticField * 1)) / (magneticVectorMagnitude * 1);
+            //double theta = Math.acos(cosineTheta);
+            //if (theta > Math.PI/2){
+                //Log.d("msg-test", "south");
+            //}
+            //else{
+                //Log.d("msg-test", "north");
+            //}
         }
     }
 
@@ -137,6 +148,14 @@ public class WeatherFragment extends Fragment implements SensorEventListener{
     }
 
     private String calculateWindDirection(){
-        return "ga";
+        double magneticVectorMagnitude = Math.sqrt(xMageneticField * xMageneticField + yMagneticField * yMagneticField);
+        double cosineTheta = ((xMageneticField * 0) + (yMagneticField * 1)) / (magneticVectorMagnitude * 1);
+        double theta = Math.acos(cosineTheta);
+        if (theta > Math.PI){
+            return "Sur";
+        }
+        else {
+            return "Norte";
+        }
     }
 }
