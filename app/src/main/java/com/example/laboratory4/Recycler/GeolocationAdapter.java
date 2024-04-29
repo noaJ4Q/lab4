@@ -53,10 +53,6 @@ public class GeolocationAdapter extends RecyclerView.Adapter<GeolocationAdapter.
         Geolocation geolocation;
         public GeolocationViewHolder(@NonNull View itemView) {
             super(itemView);
-            Button weatherButton = itemView.findViewById(R.id.weatherButton);
-            weatherButton.setOnClickListener(v -> {
-
-            });
         }
     }
 

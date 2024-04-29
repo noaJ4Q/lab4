@@ -23,6 +23,7 @@
         android:id="@+id/geolocationLatText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="Latitud: -"
         android:textColor="@color/black"
         android:textSize="14sp"
@@ -34,23 +35,13 @@
         android:id="@+id/geolocationLonText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
         android:text="Longitud: -"
         android:textColor="@color/black"
         android:textSize="14sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/geolocationLatText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/geolocationLatText"
-        app:layout_constraintTop_toBottomOf="@+id/geolocationLatText" />
+        app:layout_constraintStart_toEndOf="@+id/geolocationLatText" />
 
-    <Button
-        android:id="@+id/weatherButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#707070"
-        android:text="Buscar clima"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/geolocationLonText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/geolocationNameText" />
 </androidx.constraintlayout.widget.ConstraintLayout>
