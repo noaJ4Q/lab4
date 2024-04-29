@@ -8,6 +8,7 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,6 +24,7 @@ import com.example.laboratory4.Objetos.Weather;
 import com.example.laboratory4.R;
 import com.example.laboratory4.Recycler.WeatherAdapter;
 import com.example.laboratory4.Services.OpenWeatherService;
+import com.example.laboratory4.ViewModel.ItemsViewModel;
 import com.example.laboratory4.databinding.FragmentWeatherBinding;
 
 import java.util.ArrayList;
@@ -37,24 +39,28 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class WeatherFragment extends Fragment implements SensorEventListener{
     FragmentWeatherBinding binding;
-    AppActivity appActivity;
     WeatherAdapter weatherAdapter = new WeatherAdapter();
-    List<Weather> weathers;
+    List<Weather> weathersFragment = new ArrayList<>();
     SensorManager sensorManager;
+    ItemsViewModel itemsViewModel;
     float xMageneticField;
     float yMagneticField;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        appActivity = (AppActivity)getActivity();
         binding = FragmentWeatherBinding.inflate(inflater, container, false);
         sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
+        itemsViewModel = new ViewModelProvider(requireActivity()).get(ItemsViewModel.class);
 
         NavController navController = NavHostFragment.findNavController(WeatherFragment.this);
         Button goSearchLocationButton = getActivity().findViewById(R.id.goSearchLocationButton);
         goSearchLocationButton.setOnClickListener(v -> {
             navController.navigate(R.id.action_weatherFragment_to_cityFragment);
+        });
+
+        itemsViewModel.getWeathers().observe(getActivity(), weathers -> {
+            weathersFragment = weathers;
         });
 
         initializeRecycler();
@@ -82,6 +88,14 @@ public class WeatherFragment extends Fragment implements SensorEventListener{
         sensorManager.unregisterListener(this);
     }
 
+    private void initializeRecycler(){
+        weatherAdapter.setContext(getContext());
+        weatherAdapter.setWeathers(weathersFragment);
+
+        binding.weatherRecycler.setAdapter(weatherAdapter);
+        binding.weatherRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+    }
+
     private void searchWeather(float lat, float lon){
         binding.searchWeatherButton.setEnabled(false);
         OpenWeatherService openWeatherService = new Retrofit.Builder()
@@ -99,9 +113,9 @@ public class WeatherFragment extends Fragment implements SensorEventListener{
                    Weather weather = response.body();
 
                    weather.setWindDirection(calculateWindDirection());
-                   weathers.add(weather);
-                   appActivity.setWeathers(weathers);
-                   weatherAdapter.notifyItemInserted(weathers.size());
+                   weathersFragment.add(weather);
+                   itemsViewModel.getWeathers().setValue(weathersFragment);
+                   weatherAdapter.notifyItemInserted(weathersFragment.size());
                }
             }
 
@@ -111,16 +125,6 @@ public class WeatherFragment extends Fragment implements SensorEventListener{
                 binding.searchWeatherButton.setEnabled(true);
             }
         });
-    }
-
-    private void initializeRecycler(){
-        weathers = appActivity.getWeathers();
-
-        weatherAdapter.setContext(getContext());
-        weatherAdapter.setWeathers(weathers);
-
-        binding.weatherRecycler.setAdapter(weatherAdapter);
-        binding.weatherRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
     @Override

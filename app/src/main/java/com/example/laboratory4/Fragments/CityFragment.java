@@ -9,6 +9,7 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -25,6 +26,7 @@ import com.example.laboratory4.Objetos.Geolocation;
 import com.example.laboratory4.R;
 import com.example.laboratory4.Recycler.GeolocationAdapter;
 import com.example.laboratory4.Services.OpenWeatherService;
+import com.example.laboratory4.ViewModel.ItemsViewModel;
 import com.example.laboratory4.databinding.FragmentCityBinding;
 
 import java.util.ArrayList;
@@ -40,21 +42,25 @@ public class CityFragment extends Fragment implements SensorEventListener {
 
     FragmentCityBinding binding;
 
-    AppActivity appActivity;
     GeolocationAdapter geolocationAdapter = new GeolocationAdapter();
-    List<Geolocation> geolocations;
     SensorManager sensorManager;
+    ItemsViewModel itemsViewModel;
+    List<Geolocation> geolocationsFragment = new ArrayList<>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentCityBinding.inflate(inflater, container, false);
-        appActivity = (AppActivity)getActivity();
         sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
+        itemsViewModel = new ViewModelProvider(requireActivity()).get(ItemsViewModel.class);
 
         NavController navController = NavHostFragment.findNavController(CityFragment.this);
         Button goSearchWeatherButton = getActivity().findViewById(R.id.goSearchWeatherButton);
         goSearchWeatherButton.setOnClickListener(v -> {
             navController.navigate(R.id.action_cityFragment_to_weatherFragment);
+        });
+
+        itemsViewModel.getGeolocations().observe(getActivity(), geolocations -> {
+            geolocationsFragment = geolocations;
         });
 
         initializeRecycler();
@@ -81,8 +87,17 @@ public class CityFragment extends Fragment implements SensorEventListener {
         sensorManager.unregisterListener(this);
     }
 
+    private void initializeRecycler(){
+        geolocationAdapter.setContext(getContext());
+        geolocationAdapter.setGeolocations(geolocationsFragment);
+
+        binding.locationRecycler.setAdapter(geolocationAdapter);
+        binding.locationRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+    }
+
     private void searchLocation(String location){
         binding.searchLocationButton.setEnabled(false);
+        Log.d("msg-test", "loc: "+location);
         OpenWeatherService openWeatherService = new Retrofit.Builder()
                 .baseUrl("http://api.openweathermap.org")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -96,10 +111,11 @@ public class CityFragment extends Fragment implements SensorEventListener {
                 if (response.isSuccessful()){
                     List<Geolocation> geolocationsReceived = response.body();
                     Geolocation firstGeolocation = geolocationsReceived.get(0);
+                    Log.d("msg-test", String.valueOf(firstGeolocation));
 
-                    geolocations.add(firstGeolocation);
-                    appActivity.setGeolocations(geolocations);
-                    geolocationAdapter.notifyItemInserted(geolocations.size());
+                    geolocationsFragment.add(firstGeolocation);
+                    itemsViewModel.getGeolocations().setValue(geolocationsFragment);
+                    geolocationAdapter.notifyItemInserted(geolocationsFragment.size());
                 }
             }
 
@@ -111,16 +127,6 @@ public class CityFragment extends Fragment implements SensorEventListener {
         });
     }
 
-    private void initializeRecycler(){
-        geolocations = appActivity.getGeolocations();
-
-        geolocationAdapter.setContext(getContext());
-        geolocationAdapter.setGeolocations(geolocations);
-
-        binding.locationRecycler.setAdapter(geolocationAdapter);
-        binding.locationRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
-    }
-
     @Override
     public void onSensorChanged(SensorEvent event) {
         int sensorType = event.sensor.getType();
@@ -129,9 +135,9 @@ public class CityFragment extends Fragment implements SensorEventListener {
             double yMod = Math.pow(Math.abs(event.values[1]), 2);
             double zMod = Math.pow(Math.abs(event.values[2]), 2);
             double accelerometerModule = Math.sqrt(xMod+yMod+zMod);
-            if (accelerometerModule >= 30 && !geolocations.isEmpty()){
-                showUndoDialog();
-            }
+            //if (accelerometerModule >= 30 && !g.isEmpty()){
+                //showUndoDialog();
+            //}
         }
     }
 
@@ -152,9 +158,9 @@ public class CityFragment extends Fragment implements SensorEventListener {
         alertDialog.show().isShowing();
     }
     private void deleteLastLocationItem(){
-        int removedPosition = geolocations.size()-1;
-        geolocations.remove(removedPosition);
-        binding.locationRecycler.removeViewAt(removedPosition);
-        geolocationAdapter.notifyItemRemoved(removedPosition);
+        //int removedPosition = g.size()-1;
+        //g.remove(removedPosition);
+        //binding.locationRecycler.removeViewAt(removedPosition);
+        //geolocationAdapter.notifyItemRemoved(removedPosition);
     }
 }
