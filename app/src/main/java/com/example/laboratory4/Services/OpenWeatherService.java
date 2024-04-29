@@ -15,7 +15,7 @@ public interface OpenWeatherService {
                               @Query("appid") String apiKey);
 
     @GET("/data/2.5/weather")
-    Call<Weather> getWeather(@Query("lat") float lat,
-                             @Query("lon") float lon,
+    Call<Weather> getWeather(@Query("lat") double lat,
+                             @Query("lon") double lon,
                              @Query("appid") String apiKey);
 }

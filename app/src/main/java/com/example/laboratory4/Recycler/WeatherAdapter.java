@@ -40,13 +40,11 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherV
         TextView temperatureText = holder.itemView.findViewById(R.id.temperatureText);
         TextView tempMinText = holder.itemView.findViewById(R.id.tempMinText);
         TextView tempMaxText = holder.itemView.findViewById(R.id.tempMaxText);
-        TextView windText = holder.itemView.findViewById(R.id.windText);
 
         nameText.setText(weather.name);
         temperatureText.setText(weather.main.temp + " K");
         tempMinText.setText("Min: " + weather.main.temp_min + " K");
         tempMaxText.setText("Max: " + weather.main.temp_max + " K");
-        windText.setText("Viento: " + weather.windDirection);
     }
 
     @Override
