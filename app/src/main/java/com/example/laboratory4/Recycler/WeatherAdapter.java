@@ -41,7 +41,11 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherV
         TextView tempMinText = holder.itemView.findViewById(R.id.tempMinText);
         TextView tempMaxText = holder.itemView.findViewById(R.id.tempMaxText);
 
-        nameText.setText(weather.name);
+        if (weather.name.isEmpty()){
+            nameText.setText("Desconocido");
+        } else {
+            nameText.setText(weather.name);
+        }
         temperatureText.setText(weather.main.temp + " K");
         tempMinText.setText("Min: " + weather.main.temp_min + " K");
         tempMaxText.setText("Max: " + weather.main.temp_max + " K");

@@ -136,7 +136,7 @@ public class CityFragment extends Fragment implements SensorEventListener {
             double yMod = Math.pow(Math.abs(event.values[1]), 2);
             double zMod = Math.pow(Math.abs(event.values[2]), 2);
             double accelerometerModule = Math.sqrt(xMod+yMod+zMod);
-            if (accelerometerModule >= 30 && !geolocationsFragment.isEmpty() && !dialogOpened){
+            if (accelerometerModule >= 15 && !geolocationsFragment.isEmpty() && !dialogOpened){
                 showUndoDialog();
             }
         }
