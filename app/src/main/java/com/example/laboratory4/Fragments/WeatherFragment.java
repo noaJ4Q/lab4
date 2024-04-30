@@ -109,9 +109,8 @@ public class WeatherFragment extends Fragment implements SensorEventListener{
             public void onResponse(Call<Weather> call, Response<Weather> response) {
                binding.searchWeatherButton.setEnabled(true);
                if (response.isSuccessful()){
-                   Log.d("msg-test", String.valueOf(response.body()));
                    Weather weather = response.body();
-
+                   weather.setWindOrientation(calculateWindOrientation());
                    weathersFragment.add(weather);
                    itemsViewModel.getWeathers().setValue(weathersFragment);
                    weatherAdapter.notifyItemInserted(weathersFragment.size());
@@ -133,15 +132,15 @@ public class WeatherFragment extends Fragment implements SensorEventListener{
             xMageneticField = event.values[0];
             yMagneticField = event.values[1];
 
-            //double magneticVectorMagnitude = Math.sqrt(xMageneticField * xMageneticField + yMagneticField * yMagneticField);
-            //double cosineTheta = ((xMageneticField * 0) + (yMagneticField * 1)) / (magneticVectorMagnitude * 1);
-            //double theta = Math.acos(cosineTheta);
-            //if (theta > Math.PI/2){
-                //Log.d("msg-test", "south");
-            //}
-            //else{
-                //Log.d("msg-test", "north");
-            //}
+            double magneticVectorMagnitude = Math.sqrt(xMageneticField * xMageneticField + yMagneticField * yMagneticField);
+            double cosineTheta = ((xMageneticField * 0) + (yMagneticField * 1)) / (magneticVectorMagnitude * 1);
+            double theta = Math.acos(cosineTheta);
+            if (theta > Math.PI/2){
+                Log.d("msg-test", "south");
+            }
+            else {
+                Log.d("msg-test", "north");
+            }
         }
     }
 
@@ -150,11 +149,11 @@ public class WeatherFragment extends Fragment implements SensorEventListener{
 
     }
 
-    private String calculateWindDirection(){
+    private String calculateWindOrientation(){
         double magneticVectorMagnitude = Math.sqrt(xMageneticField * xMageneticField + yMagneticField * yMagneticField);
         double cosineTheta = ((xMageneticField * 0) + (yMagneticField * 1)) / (magneticVectorMagnitude * 1);
         double theta = Math.acos(cosineTheta);
-        if (theta > Math.PI){
+        if (theta > Math.PI/2){
             return "Sur";
         }
         else {

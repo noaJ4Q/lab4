@@ -52,4 +52,16 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/tempMinText"
         app:layout_constraintStart_toEndOf="@+id/tempMinText" />
 
+    <TextView
+        android:id="@+id/windText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:text="Viento: -"
+        android:textColor="@color/black"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tempMaxText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/tempMaxText" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
