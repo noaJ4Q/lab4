@@ -151,13 +151,13 @@ public class WeatherFragment extends Fragment implements SensorEventListener{
 
     private String calculateWindOrientation(){
         double magneticVectorMagnitude = Math.sqrt(xMageneticField * xMageneticField + yMagneticField * yMagneticField);
-        double cosineTheta = ((xMageneticField * 0) + (yMagneticField * 1)) / (magneticVectorMagnitude * 1);
+        double cosineTheta = ((xMageneticField * 1) + (yMagneticField * 0)) / (magneticVectorMagnitude * 1);
         double theta = Math.acos(cosineTheta);
         if (theta > Math.PI/2){
-            return "Sur";
+            return "Este";
         }
         else {
-            return "Norte";
+            return "Oeste";
         }
     }
 }
