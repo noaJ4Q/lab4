@@ -28,6 +28,7 @@ import com.example.laboratory4.Recycler.GeolocationAdapter;
 import com.example.laboratory4.Services.OpenWeatherService;
 import com.example.laboratory4.ViewModel.ItemsViewModel;
 import com.example.laboratory4.databinding.FragmentCityBinding;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -148,18 +149,18 @@ public class CityFragment extends Fragment implements SensorEventListener {
     }
 
     private void showUndoDialog(){
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
-        alertDialog.setMessage("Deshacer acción");
-        alertDialog.setPositiveButton("Deshacer", (dialog, which) -> {
+        MaterialAlertDialogBuilder materialDialog = new MaterialAlertDialogBuilder(getContext());
+        materialDialog.setMessage("Deshacer acción");
+        materialDialog.setPositiveButton("Deshacer", (dialog, which) -> {
             deleteLastLocationItem();
             dialog.dismiss();
             dialogOpened = false;
         });
-        alertDialog.setNegativeButton("Cancelar", (dialog, which) -> {
+        materialDialog.setNegativeButton("Cancelar", (dialog, which) -> {
             dialog.dismiss();
             dialogOpened = false;
         });
-        alertDialog.show();
+        materialDialog.show();
         dialogOpened = true;
     }
     private void deleteLastLocationItem(){

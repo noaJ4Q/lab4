@@ -16,6 +16,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.laboratory4.databinding.ActivityMainBinding;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
@@ -54,15 +55,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showNoInternetDialog() {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-        alertDialog.setMessage("No se pudo establecer conexión con internet");
-        alertDialog.setPositiveButton("Ok", (dialog, which) -> {
-            Log.d("msg-test", "OK clicked");
-        });
-        alertDialog.setNeutralButton("Configuración", (dialog, which) -> {
+        MaterialAlertDialogBuilder materialDialog = new MaterialAlertDialogBuilder(this);
+        materialDialog.setMessage("No se pudo establecer una conexión con internet");
+        materialDialog.setPositiveButton("Ok", (dialog, which) -> {});
+        materialDialog.setNeutralButton("Configuración", (dialog, which) -> {
             openConfiguration();
         });
-        alertDialog.show();
+        materialDialog.show();
     }
 
     private void openConfiguration(){
