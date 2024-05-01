@@ -133,15 +133,15 @@ public class WeatherFragment extends Fragment implements SensorEventListener{
             xMageneticField = event.values[0];
             yMagneticField = event.values[1];
 
-            //double magneticVectorMagnitude = Math.sqrt(xMageneticField * xMageneticField + yMagneticField * yMagneticField);
-            //double cosineTheta = ((xMageneticField * 0) + (yMagneticField * 1)) / (magneticVectorMagnitude * 1);
-            //double theta = Math.acos(cosineTheta);
-            //if (theta > Math.PI/2){
-                //Log.d("msg-test", "south");
-            //}
-            //else{
-                //Log.d("msg-test", "north");
-            //}
+            double magneticVectorMagnitude = Math.sqrt(xMageneticField * xMageneticField + yMagneticField * yMagneticField);
+            double cosineTheta = ((xMageneticField * 0) + (yMagneticField * 1)) / (magneticVectorMagnitude * 1);
+            double theta = Math.acos(cosineTheta);
+            if (theta > Math.PI/2){
+                Log.d("msg-test", "south");
+            }
+            else{
+                Log.d("msg-test", "north");
+            }
         }
     }
 
